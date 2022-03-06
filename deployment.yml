@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foolstack-operator
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      application: foolstack-operator
+  template:
+    metadata:
+      labels:
+        application: foolstack-operator
+    spec:
+      serviceAccountName: kopf-account
+      containers:
+      - name: foolstack-operator
+        image: enat/foolstack-operator
+        imagePullPolicy: Always
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: POSTGRES_PASSWORD

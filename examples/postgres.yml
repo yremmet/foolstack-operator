@@ -1,0 +1,4 @@
+apiVersion: yannic.codes/v1
+kind: PostgreSQLService
+metadata:
+  name: postgresql-example
